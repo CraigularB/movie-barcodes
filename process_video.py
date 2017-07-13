@@ -1,4 +1,4 @@
-from __future__ import division
+# from __future__ import division
 import subprocess as sp
 import numpy
 from PIL import Image, ImageDraw
@@ -8,14 +8,14 @@ import sys
 
 # Timestamp so you can see how long it took
 start_time = "Script started at " + time.strftime("%H:%M:%S")
-print start_time
+print(start_time)
 
 # optional starting time hh:mm:ss.ff; default value set to 00:00:00.0
 hh = "%02d" % (0,)
 mm = ":%02d" % (0,)
 ss = ":%02d" % (0,)
 ff = ".0"
-print "Timestamp for first frame: "+hh+mm+ss+ff
+print("Timestamp for first frame: " + hh + mm + ss + ff)
 
 # input file (first argument)
 filename = str(sys.argv[1])
@@ -24,14 +24,15 @@ height = int(sys.argv[3])
 nthFrame = int(sys.argv[4])
 # output image file (same as input file, with non-alphanums stripped):
 outfilename = re.sub(r'\W+', '', filename) + ".png"
-print "Filename:", filename
-print "Dimensions:", width, height
+print("Filename:", filename)
+print("Dimensions:", width, height)
 
 ###
 ### This section: credit to http://zulko.github.io/blog/2013/09/27/read-and-write-video-frames-in-python-using-ffmpeg/
 
 # Open the video file. In Windows you might need to use FFMPEG_BIN="ffmpeg.exe"; Linux/OSX should be OK.
-FFMPEG_BIN = r"C:\Users\Nick\Documents\Programming\movie-barcodes\ffmpeg-20170520-64ea4d1-win64-static\bin\ffmpeg.exe"
+# FFMPEG_BIN = r"C:\Users\Nick\Documents\Programming\movie-barcodes\ffmpeg-20170520-64ea4d1-win64-static\bin\ffmpeg.exe"
+FFMPEG_BIN = 'ffmpeg'
 command = [ FFMPEG_BIN,
             '-threads', '4',
             '-ss', hh+mm+ss,
@@ -58,7 +59,7 @@ while pipe.stdout.read(width*height*3): # as long as there's data in the pipe, k
         try:
             rgb_list.append(draw_next_frame_rgb_avg(pipe.stdout.read(width*height*3)))
         except:
-            print "No more frames to process (or error occurred). Number of frames processed:", x
+            print("No more frames to process (or error occurred). Number of frames processed:", x)
 
 # create a new image width the same width as number of frames sampled,
 # and draw one vertical line per frame at x=frame number
@@ -73,6 +74,6 @@ for rgb_tuple in rgb_list:
 new.show() 
 new.save(outfilename, "PNG")
 
-print start_time
-print "Script finished at " + time.strftime("%H:%M:%S")
-print "Frames" + str(len(rgb_list))
+print(start_time)
+print("Script finished at " + time.strftime("%H:%M:%S"))
+print("Frames" + str(len(rgb_list)))
